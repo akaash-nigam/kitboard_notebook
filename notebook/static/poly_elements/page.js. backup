@@ -1,0 +1,148 @@
+    page(app.baseUrl, function() {
+      app.route = 'home';
+      var x = document.getElementById('icon1');
+      x.textContent="Projects";
+      x.href="Home/tutorials";
+      
+      var y = document.getElementById('icon2');
+      y.textContent="NewsFeed";
+      y.href="Home/Newsfeed";
+
+      var z = document.getElementById('icon3');
+      z.textContent="";
+      z.href="";
+
+      var a = document.getElementById('icon4');
+      a.textContent="";
+      a.href="";
+
+      var b = document.getElementById('icon5');
+      b.textContent="";
+      b.href="";
+
+    });
+
+    page('/newsfeed', function() {
+      app.route = 'home-newsfeed';
+
+    });
+
+    page('/project', function() {
+      app.route = 'project';
+      var x = document.getElementById('icon1');
+      x.textContent="DataConfig";
+      x.href="projects-data-config";
+      
+      var y = document.getElementById('icon2');
+      y.textContent="Predictions";
+      y.href="projects-predictions";
+      
+      var z = document.getElementById('icon3');
+      z.textContent="Streaming";
+      z.href="projects-streaming";
+
+      var a = document.getElementById('icon4');
+      a.textContent="Visualization";
+      a.href="projects-Visualization";
+      
+      
+    });
+
+    page('/library', function() {
+      app.route = 'library';
+      var x = document.getElementById('icon1');
+      x.textContent="Stream Pcks";
+      x.href="library-streaming";
+      
+      var y = document.getElementById('icon2');
+      y.textContent="Pred. Pcks";
+      y.href="library-predictions";
+      
+      var z = document.getElementById('icon3');
+      z.textContent="Vis Pcks";
+      z.href="library-viz"
+
+      var a = document.getElementById('icon4');
+      a.textContent="Action Pcks";
+      a.href="library-action";
+
+      var b = document.getElementById('icon5');
+      b.textContent="data Pcks";
+      b.href="library-data";
+
+      var c = document.getElementById('pt');
+      c.span.textContent="Library";
+    });
+
+    page('/browse', function() {
+      app.route = 'browse';  
+      var x = document.getElementById('icon1');
+      x.textContent="Tutorials";
+      x.href="browse-tutorials";
+      
+      var y = document.getElementById('icon2');
+      y.textContent="Docs";
+      y.href="browse-docs";
+
+      var z = document.getElementById('icon3');
+      z.textContent="";
+      z.href="";
+
+      var a = document.getElementById('icon4');
+      a.textContent="";
+      a.href="";
+
+      var b = document.getElementById('icon5');
+      b.textContent="";
+      b.href="";
+      
+    });
+
+    page('/users', function() {
+      app.route = 'users';
+    });
+
+    page('/contact', function() {
+      app.route = 'contact';
+    });
+
+//  End of Main nodes. 
+    page('/users/:name', function(data) {
+      app.route = 'user-info';
+      app.params = data.params;
+    });
+
+    page('/home/:name', function(data) {
+      app.route = 'home-info';
+      app.params = data.params;
+    });
+
+    page('/projects-data-config', function(data) {
+      app.route = 'projects-data-config';
+      app.params = data.params;
+    });
+
+    page('/projects-predictions', function(data) {
+      app.route = 'projects-predictions';
+      app.params = data.params;
+    });
+
+    page('/projects/:name', function(data) {
+      app.route = 'projects-info';
+      app.params = data.params;
+    });
+
+    page('/library/:name', function(data) {
+      app.route = 'library-info';
+      app.params = data.params;
+    });
+
+    page('/browse-docs', function(data) {
+      app.route = 'browse-docs';
+      app.params = data.params;
+    });
+
+    page('/browse-tutorials', function(data) {
+      app.route = 'browse-tutorials';
+      app.params = data.params;
+    });

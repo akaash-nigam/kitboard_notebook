@@ -1,0 +1,36 @@
+{% extends "page2.html" %}
+
+{% block title %}{{page_title}}{% endblock %}
+{% block params %}
+{{super()}}
+data-base-url="{{base_url | urlencode}}"
+data-notebook-path="{{notebook_path | urlencode}}"
+data-terminals-available="{{terminals_available}}"
+{% endblock %}
+
+{% block site %}
+
+
+  <div id="ipython-main-app" class="container">
+          <div id="notebook_list">
+            <div id="notebook_list_header">
+              <div id="project_name">
+                <ul class="breadcrumb">
+                </ul>
+              </div>
+            </div>
+          </div>
+ </div>
+
+
+{% endblock %}
+
+{% block script %}
+    {{super()}}
+
+{% if ignore_minified_js %}
+    <script src="{{ static_url("tree/js/main.js") }}" type="text/javascript" charset="utf-8"></script>
+{% else %}
+    <script src="{{ static_url("tree/js/main.min.js") }}" type="text/javascript" charset="utf-8"></script>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,221 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+
+
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="Polymer Starter Kit">
+
+<!-- Setting up polymer Dependenices -->
+  <meta name="theme-color" content="#2E3AA1">
+  <meta name="msapplication-TileColor" content="#3372DF">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="PSK">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Polymer Starter Kit">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <style is="custom-style" include="shared-styles"></style>
+  <link rel="manifest" href="{{static_url("polymer/manifest.json") }}">
+  <link rel="icon" sizes="192x192" href="{{static_url("polymer/images/touch/chrome-touch-icon-192x192.png") }}">
+  <link rel="apple-touch-icon" href="{{static_url("polymer/images/touch/apple-touch-icon.png") }}">
+  <meta name="msapplication-TileImage" content="{{static_url("polymer/images/touch/ms-touch-icon-144x144-precomposed.png") }}">
+  <link rel="stylesheet" href="{{static_url("polymer/styles/main.css") }}"  >
+  <script src="{{static_url("polymer/bower_components/webcomponentsjs/webcomponents-lite.js") }}"></script>
+  <link rel="import" href="{{static_url("polymer/elements/elements.html") }}">
+
+<!-- Setting up Notebook Dependenices -->
+  <title>{% block title %}IPython Notebook{% endblock %}</title>
+  {% block favicon %}<link rel="shortcut icon" type="image/x-icon" href="{{static_url("base/images/favicon.ico") }}">{% endblock %}
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <link rel="stylesheet" href="{{static_url("components/jquery-ui/themes/smoothness/jquery-ui.min.css") }}" type="text/css" />
+  <link rel="stylesheet" href="{{static_url("components/jquery-typeahead/dist/jquery.typeahead.min.css") }}" type="text/css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+  {% block stylesheet %}
+  <link rel="stylesheet" href="{{ static_url("style/style.min.css") }}" type="text/css"/>
+  {% endblock %}
+  <link rel="stylesheet" href="{{ base_url }}custom/custom.css" type="text/css" />
+  <script src="{{static_url("components/es6-promise/promise.min.js")}}" type="text/javascript" charset="utf-8"></script>
+  <script src="{{static_url("components/requirejs/require.js") }}" type="text/javascript" charset="utf-8"></script>
+  <script>
+    require.config({
+        {% if version_hash %}
+        urlArgs: "v={{version_hash}}",
+         {% endif %}
+         baseUrl: '{{static_url("", include_version=False)}}',
+         paths: {
+         {% if ignore_minified_js %}
+          'auth/js/main': 'auth/js/main',
+         {% else %}
+            'auth/js/main': 'auth/js/main.min',
+          {% endif %}
+          custom : '{{ base_url }}custom',
+          nbextensions : '{{ base_url }}nbextensions',
+          widgets : '{{ base_url }}deprecatedwidgets',
+          kernelspecs : '{{ base_url }}kernelspecs',
+          underscore : 'components/underscore/underscore-min',
+          backbone : 'components/backbone/backbone-min',
+          jquery: 'components/jquery/jquery.min',
+          bootstrap: 'components/bootstrap/js/bootstrap.min',
+          bootstraptour: 'components/bootstrap-tour/build/js/bootstrap-tour.min',
+         'jquery-ui': 'components/jquery-ui/ui/minified/jquery-ui.min',
+          moment: 'components/moment/moment',
+         codemirror: 'components/codemirror',
+         termjs: 'components/term.js/src/term',
+         typeahead: 'components/jquery-typeahead/dist/jquery.typeahead'
+         },
+          map: { // for backward compatibility
+            "*": {
+              "jqueryui": "jquery-ui",
+            }
+          },
+          shim: {
+            typeahead: {
+              deps: ["jquery"],
+              exports: "typeahead"
+            },
+            underscore: {
+              exports: '_'
+            },
+            backbone: {
+              deps: ["underscore", "jquery"],
+              exports: "Backbone"
+            },
+            bootstrap: {
+              deps: ["jquery"],
+              exports: "bootstrap"
+            },
+            bootstraptour: {
+              deps: ["bootstrap"],
+              exports: "Tour"
+            },
+            "jquery-ui": {
+              deps: ["jquery"],
+              exports: "$"
+            }
+          },
+          waitSeconds: 30,
+      });
+      require.config({
+          map: {
+              '*':{
+                'contents': '{{ contents_js_source }}',
+              }
+          }
+      });
+    </script>
+
+    {% block meta %}
+    {% endblock %}
+
+</head>
+
+
+
+<!-- Notebook Body -->
+<body class="{% block bodyclasses %}{% endblock %}" unresolved {% block params %}{% endblock %}>
+<template is="dom-bind" id="app">
+
+
+<noscript>
+    <div id='noscript'>
+      IPython Notebook requires JavaScript.<br>
+      Please enable it to proceed.
+  </div>
+</noscript>
+
+<!-- Header -->
+<div id="header">
+  <div id="header-container" class="container">
+  <div id="ipython_notebook" class="nav navbar-brand pull-left"><a href="{{default_url}}" title='dashboard'>{% block logo %}<img src='{{static_url("base/images/logo.png") }}' alt='Jupyter Notebook'/>{% endblock %}</a></div>
+
+  {% block header_buttons %}
+  
+  {% block login_widget %}
+
+    <span id="login_widget">
+      {% if logged_in %}
+        <button id="logout" class="btn btn-sm navbar-btn">Logout</button>
+      {% elif login_available and not logged_in %}
+        <button id="login" class="btn btn-sm navbar-btn">Login</button>
+      {% endif %}
+    </span>
+
+  {% endblock %}
+
+  {% endblock header_buttons %}
+
+  {% block headercontainer %}
+  {% endblock %}
+  </div>
+  <div class="header-bar"></div>
+
+  {% block header %}
+  {% endblock %}
+</div>
+
+    <paper-drawer-panel id="paperDrawerPanel">
+
+
+      <paper-scroll-header-panel drawer fixed>
+      </paper-scroll-header-panel>
+
+
+      <paper-scroll-header-panel main id="headerPanelMain" condenses keep-condensed-header>
+        <paper-toolbar id="mainToolbar" class="tall">
+          <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>
+          <span class="space"></span>
+          <paper-icon-button icon="refresh"></paper-icon-button>
+          <paper-icon-button icon="search"></paper-icon-button>
+          <div class="middle middle-container">
+            <div class="app-name">Welcome Aakash to your kitBoard.</div>
+          </div>
+          <div class="bottom bottom-container">
+            <div class="bottom-title">The future of the the data science today</div>
+          </div>
+        </paper-toolbar>
+
+        <div class="content">
+
+              <!-- Body -->
+            <div id="site">
+            {% block site %}
+            {% endblock %}
+            </div>
+
+            {% block after_site %}
+            {% endblock %}
+
+            {% block script %}
+            {% endblock %}
+          
+        </div>
+      </paper-scroll-header-panel>
+    </paper-drawer-panel>
+
+
+
+
+
+
+<!-- build:js scripts/app.js -->
+  <script src="static/polymer/scripts/app.js"></script>
+  <!-- endbuild-->
+  </template>
+</body>
+</html>
+
+
+

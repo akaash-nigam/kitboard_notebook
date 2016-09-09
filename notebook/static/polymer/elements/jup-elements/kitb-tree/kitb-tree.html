@@ -1,0 +1,162 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../../bower_components/paper-styles/typography.html">
+<link rel="import" href="../../../bower_components/common-js-dep.html">
+<link rel="import" href="../../../bower_components/common-style-dep.html">
+
+
+<link rel="import" href="../common-js.html">
+<link rel="import" href="../common-style.html">
+<link rel="import" href="../js-dep.html">
+<link rel="import" href="../style-dep.html">
+
+
+<iron-ajax auto
+   url="https://www.googleapis.com/youtube/v3/search"
+   params='{"part":"snippet", "q":"polymer", "key": "AIzaSyAuecFZ9xJXbGDkQYWBmYrtzOGJD-iDIgI", "type": "video"}'
+   handle-as="json"
+   last-response="{{ajaxResponse}}">
+ </iron-ajax>
+
+<template is="dom-repeat" items="[[ajaxResponse.items]]">
+          <div class="horizontal-section">
+            <h2><a href="[[url(item.id.videoId)]]" target="_blank">[[item.snippet.title]]</a></h2>
+            <iron-image src="[[item.snippet.thumbnails.high.url]]" width="256" height="256" sizing="cover" preload fade></iron-image>
+            <p>[[item.snippet.description]]</p>
+          </div>
+</template>
+
+
+<dom-module id="kitb-tree">
+  <template>
+  <div id="ipython-main-app" class="container">
+    <div id="tab_content" class="tabbable">
+      <ul id="tabs" class="nav nav-tabs">
+        <li class="active"><a href="#notebooks" data-toggle="tab">A</a></li>
+        <li><a href="#running" data-toggle="tab">B</a></li>
+        <li><a href="#clusters" data-toggle="tab" class="clusters_tab_link" >C</a></li>
+      </ul>
+
+
+      <div class="tab-content">
+        <div id="notebooks" class="tab-pane active">
+          <div id="notebook_toolbar" class="row">
+            <div class="col-sm-8 no-padding">
+              <div class="dynamic-instructions">
+                Click on the Notebook to open in the Browser
+              </div>
+              <div class="dynamic-buttons">
+                  <button title="Duplicate selected" class="duplicate-button btn btn-default btn-xs">Duplicate</button>
+                  <button title="Rename selected" class="rename-button btn btn-default btn-xs">Rename</button>
+                  <button title="Shutdown selected notebook(s)" class="shutdown-button btn btn-default btn-xs btn-warning">Shutdown</button>
+                  <button title="Delete selected" class="delete-button btn btn-default btn-xs btn-danger"><i class="fa fa-trash"></i></button>
+              </div>
+            </div>
+            <div class="col-sm-4 no-padding tree-buttons">
+              <div class="pull-right">
+                <form id='alternate_upload'  class='alternate_upload'>
+                  <span id="notebook_list_info">
+                  <span class="btn btn-xs btn-default btn-upload">
+                  <input  title="Click to browse for a file to upload." type="file" name="datafile" class="fileinput" multiple='multiple'>
+                  Upload
+                  </span>
+                  </span>
+                </form>
+                <div id="new-buttons" class="btn-group">
+                  <button class="dropdown-toggle btn btn-default btn-xs" data-toggle="dropdown">
+                  <span>New</span>
+                  <span class="caret"></span>
+                  </button>
+                  <ul id="new-menu" class="dropdown-menu">
+                    <li role="presentation" id="new-file">
+                      <a role="menuitem" tabindex="-1" href="#">Text File</a>
+                    </li>
+                    <li role="presentation" id="new-folder">
+                      <a role="menuitem" tabindex="-1" href="#">Folder</a>
+                    </li>
+                    {% if terminals_available %}
+                    <li role="presentation" id="new-terminal">
+                      <a role="menuitem" tabindex="-1" href="#">Terminal</a>
+                    </li>
+                    {% else %}
+                    <li role="presentation" id="new-terminal-disabled" class="disabled">
+                      <a role="menuitem" tabindex="-1" href="#">Terminals Unavailable</a>
+                    </li>
+                    {% endif %}
+                    <li role="presentation" class="divider"></li>
+                    <li role="presentation" class="dropdown-header" id="notebook-kernels">Notebooks</li>
+                  </ul>
+                </div>
+                <div class="btn-group">
+                    <button id="refresh_notebook_list" title="Refresh notebook list" class="btn btn-default btn-xs"><i class="fa fa-refresh"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div id="notebook_list">
+            <div id="notebook_list_header" class="row list_header">
+              <div class="btn-group dropdown" id="tree-selector">
+                <button title="Select All / None" type="button" class="btn btn-default btn-xs" id="button-select-all">
+                  <input type="checkbox" class="pull-left tree-selector" id="select-all"><span id="counter-select-all">&nbsp;</span></input>
+                </button>
+                <button title="Select..." class="btn btn-default btn-xs dropdown-toggle" type="button" id="tree-selector-btn" data-toggle="dropdown" aria-expanded="true">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul id='selector-menu' class="dropdown-menu" role="menu" aria-labelledby="tree-selector-btn">
+                  <li role="presentation"><a id="select-folders" role="menuitem" tabindex="-1" href="#" title="Select All Folders"><i class="menu_icon folder_icon icon-fixed-width"></i> Folders</a></li>
+                  <li role="presentation"><a id="select-notebooks" role="menuitem" tabindex="-1" href="#" title="Select All Notebooks"><i class="menu_icon notebook_icon icon-fixed-width"></i> All Notebooks</a></li>
+                  <li role="presentation"><a id="select-running-notebooks" role="menuitem" tabindex="-1" href="#" title="Select Running Notebooks"><i class="menu_icon running_notebook_icon icon-fixed-width"></i> Running</a></li>
+                  <li role="presentation"><a id="select-files" role="menuitem" tabindex="-1" href="#" title="Select All Files"><i class="menu_icon file_icon icon-fixed-width"></i> Files</a></li>
+                </ul>
+              </div>
+              <div id="project_name">
+                <ul class="breadcrumb">
+                  <li><a href="{{breadcrumbs[0][0]}}"><i class="fa fa-home"></i></a></li>
+                {% for crumb in breadcrumbs[1:] %}
+                  <li><a href="{{crumb[0]}}">{{crumb[1]}}</a></li>
+                {% endfor %}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="clusters" class="tab-pane">
+          Clusters tab will be removed!
+          See <a href="https://github.com/ipython/ipyparallel">IPython parallel</a> for installation details.
+        </div>
+      </div><!-- class:tab-content -->
+    </div><!-- id:tab_content --> 
+  </div><!-- ipython-main-app  -->
+
+
+  </template>
+
+  <script>
+    (function() {
+      'use strict';
+
+      Polymer({
+        is: 'kitb-tree',
+
+        properties: {
+          greeting: {
+            type: String,
+            value: 'Welcome!',
+            notify: true
+          }
+        }
+      });
+    })();
+  </script>
+</dom-module>

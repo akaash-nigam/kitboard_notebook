@@ -1,0 +1,11 @@
+/*
+Placeholder for custom user CSS
+
+mainly to be overridden in profile/static/custom/custom.css
+
+This will always be an empty file in IPython
+*/
+
+
+
+:host{display:block}.nav{border-right:1px solid #ccc}.list-panel{background-color:#fafafa;--paper-header-panel-standard-container:{border-right:1px solid #ccc};}paper-toolbar{background-color:#3949AB}.list{padding:0}.list paper-item{height:5pc;border-bottom:1px solid #dedede;background-color:#fafafa}.main-drawer-panel:not([narrow]) [list-toggle]{display:none}.content{height:3000px}

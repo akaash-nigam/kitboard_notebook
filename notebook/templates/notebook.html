@@ -1,0 +1,245 @@
+{% extends "page.html" %}
+
+{% block stylesheet %}
+
+{% if mathjax_url %}
+
+
+
+<script type="text/javascript" src="{{mathjax_url}}?config=TeX-AMS_HTML-full,Safe&delayStartupUntil=configured" charset="utf-8"></script>
+{% endif %}
+<script type="text/javascript">
+// MathJax disabled, set as null to distingish from *missing* MathJax,
+// where it will be undefined, and should prompt a dialog later.
+window.mathjax_url = "{{mathjax_url}}";
+</script>
+
+
+<link rel="stylesheet" href="{{ static_url("components/bootstrap-tour/build/css/bootstrap-tour.min.css") }}" type="text/css" />
+<link rel="stylesheet" href="{{ static_url("components/codemirror/lib/codemirror.css") }}">
+
+{{super()}}
+
+<link rel="stylesheet" href="{{ static_url("notebook/css/override.css") }}" type="text/css" />
+<link rel="stylesheet" href=""  id='kernel-css'                             type="text/css" />
+
+{% endblock %}
+
+{% block bodyclasses %}notebook_app {{super()}}{% endblock %}
+
+{% block params %}
+
+{{super()}}
+data-base-url="{{base_url | urlencode}}"
+data-ws-url="{{ws_url | urlencode}}"
+data-notebook-name="{{notebook_name | urlencode}}"
+data-notebook-path="{{notebook_path | urlencode}}"
+
+{% endblock %}
+
+
+{% block headercontainer %}
+
+ 
+
+<span id="save_widget" class="pull-left save_widget">
+    <span id="notebook_name" class="filename"></span>
+    <span class="checkpoint_status"></span>
+    <span class="autosave_status"></span>
+</span>
+
+
+
+
+{% endblock headercontainer %}
+
+{% block header %}
+
+
+<paper-tabs selected="0">
+  <paper-tab>Metadata</paper-tab>
+  <paper-tab>Package Info</paper-tab>
+  <paper-tab>Something else</paper-tab>
+</paper-tabs>
+
+
+
+<!--
+<div id="maintoolbar" class="navbar">
+  <div class="toolbar-inner navbar-inner navbar-nobg">
+    <div id="maintoolbar-container" class="container"></div>
+  </div>
+</div>
+-->
+
+
+
+<div id="menubar-container" class="container">
+
+<div id="menubar">
+    <div id="menus" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <button type="button" class="btn btn-default navbar-btn navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+              <i class="fa fa-bars"></i>
+              <span class="navbar-text">Menu</span>
+            </button>
+            <p id="kernel_indicator" class="navbar-text indicator_area">
+              <span class="kernel_indicator_name">Kernel</span>
+              <i id="kernel_indicator_icon"></i>
+            </p>
+            <i id="readonly-indicator" class="navbar-text" title='This notebook is read-only'>
+                <span class="fa-stack">
+                    <i class="fa fa-save fa-stack-1x"></i>
+                    <i class="fa fa-ban fa-stack-2x text-danger"></i>
+                </span>
+            </i>
+            <i id="modal_indicator" class="navbar-text"></i>
+            <span id="notification_area"></span>
+            <div class="navbar-collapse collapse">
+              <ul class="nav navbar-nav">
+
+
+                <paper-dropdown-menu label="Your favourite pastry">
+  <paper-menu class="dropdown-content">
+    <paper-item>Cut Cells</paper-item>
+    <paper-item>Copy Cells</paper-item>
+    <paper-item>Paste Cells Above</paper-item>
+    <paper-item>Paste Cells Below</paper-item>
+    <paper-item>Delete Cells</paper-item>
+    <paper-item>Find and Replace</paper-item>
+  </paper-menu>
+</paper-dropdown-menu>
+
+<paper-button>aa</paper-button>
+
+
+
+
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Edit</a>
+                    <ul id="edit_menu" class="dropdown-menu">
+                        <li id="cut_cell"><a href="#">Cut Cells</a></li>
+                        <li id="copy_cell"><a href="#">Copy Cells</a></li>
+                        <li id="paste_cell_above" class="disabled"><a href="#">Paste Cells Above</a></li>
+                        <li id="paste_cell_below" class="disabled"><a href="#">Paste Cells Below</a></li>
+                        <li id="paste_cell_replace" class="disabled"><a href="#">Paste Cells &amp; Replace</a></li>
+                        <li id="delete_cell"><a href="#">Delete Cells</a></li>
+                        <li id="undelete_cell" class="disabled"><a href="#">Undo Delete Cells</a></li>
+                        <li class="divider"></li>
+                        <li id="split_cell"><a href="#">Split Cell</a></li>
+                        <li id="merge_cell_above"><a href="#">Merge Cell Above</a></li>
+                        <li id="merge_cell_below"><a href="#">Merge Cell Below</a></li>
+                        <li class="divider"></li>
+                        <li id="move_cell_up"><a href="#">Move Cell Up</a></li>
+                        <li id="move_cell_down"><a href="#">Move Cell Down</a></li>
+                        <li class="divider"></li>
+                        <li id="edit_nb_metadata"><a href="#">Edit Notebook Metadata</a></li>
+                        <li class="divider"></li>
+                        <li id="find_and_replace"><a href="#"> Find and Replace </a></li>
+                    </ul>
+                </li>
+
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Insert</a>
+                    <ul id="insert_menu" class="dropdown-menu">
+                        <li id="insert_cell_above"
+                            title="Insert an empty Code cell above the currently active cell">
+                            <a href="#">Insert Cell Above</a></li>
+                        <li id="insert_cell_below"
+                            title="Insert an empty Code cell below the currently active cell">
+                            <a href="#">Insert Cell Below</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">Help</a>
+                    <ul  id="help_menu" class="dropdown-menu">
+                        {% block help %}
+                        <li id="notebook_tour" title="A quick tour of the notebook user interface"><a href="#">User Interface Tour</a></li>
+                        <li id="keyboard_shortcuts" title="Opens a tooltip with all keyboard shortcuts"><a href="#">Keyboard Shortcuts</a></li>
+                        <li class="divider"></li>
+                        {% set
+                            sections = (
+                                (
+                                    ("http://nbviewer.ipython.org/github/ipython/ipython/blob/3.x/examples/Notebook/Index.ipynb", "Notebook Help", True),
+                                    ("https://help.github.com/articles/markdown-basics/","Markdown",True),
+                                ),
+                            )
+                        %}
+
+                        {% for helplinks in sections %}
+                            {% for link in helplinks %}
+                                <li><a rel="noreferrer" href="{{link[0]}}" target="{{'_blank' if link[2]}}" title="{{'Opens in a new window' if link[2]}}">
+                                {% if link[2] %}
+                                    <i class="fa fa-external-link menu-icon pull-right"></i>
+                                {% endif %}
+
+                                {{link[1]}}
+                                </a></li>
+                            {% endfor %}
+                            {% if not loop.last %}
+                                <li class="divider"></li>
+                            {% endif %}
+                        {% endfor %}
+                        <li class="divider"></li>
+                        <li title="About IPython Notebook"><a id="notebook_about" href="#">About</a></li>
+                        <li class="divider"></li>
+                        <li title="Feedback"><a id="notebook_about" href="#">Feedback</a></li>
+                        <li class="divider"></li>
+                        <li title="FeatureRequest"><a id="notebook_about" href="#">Feature Request</a></li>
+                        {% endblock %}
+                    </ul>
+                </li>
+              </ul>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+    <div id="ipython-main-app">
+    <div id="notebook_panel">
+        <div id="notebook"></div>
+        <div id='tooltip' class='ipython_tooltip' style='display:none'></div>
+    </div>
+    </div>
+
+    <div id="pager">
+    <div id="pager-contents">
+        <div id="pager-container" class="container"></div>
+    </div>
+    <div id='pager-button-area'></div>
+    </div>
+
+
+</div>
+
+<div class="lower-header-bar"></div>
+{% endblock header %}
+
+
+
+
+
+{% block site %}
+
+
+
+
+{% endblock %}
+
+{% block after_site %}
+
+
+
+{% endblock %}
+
+{% block script %}
+{{super()}}
+
+
+
+
+{% if ignore_minified_js %}
+   
+{% else %}
+   
+{% endif %}
+
+{% endblock %}

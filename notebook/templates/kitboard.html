@@ -1,0 +1,229 @@
+<!doctype html>
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="generator" content="Polymer Starter Kit">
+  <title>Polymer Starter Kit</title>
+
+  <!-- Place favicon.ico in the `app/` directory -->
+
+  <!-- Chrome for Android theme color -->
+  <meta name="theme-color" content="#2E3AA1">
+
+  <!-- Web Application Manifest -->
+  <link rel="manifest" href="{{static_url("polymer/manifest.json") }}">
+
+  <!-- Tile color for Win8 -->
+  <meta name="msapplication-TileColor" content="#3372DF">
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="PSK">
+  <link rel="icon" sizes="192x192" href="images/touch/chrome-touch-icon-192x192.png">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Polymer Starter Kit">
+  <link rel="apple-touch-icon" href="images/touch/apple-touch-icon.png">
+
+  <!-- Tile icon for Win8 (144x144) -->
+  <meta name="msapplication-TileImage" content="{{static_url("polymer/images/images/touch/ms-touch-icon-144x144-precomposed.png") }}">
+
+
+  <link rel="icon" sizes="192x192" href="{{static_url("polymer/images/touch/chrome-touch-icon-192x192.png") }}">
+  <!-- build:css styles/main.css -->
+  <link rel="stylesheet" href="{{static_url("polymer/styles/main.css") }}"  >
+  
+  <!-- endbuild-->
+
+  <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
+  <script src="{{static_url("polymer/bower_components/webcomponentsjs/webcomponents-lite.js") }}"></script>
+  <!-- endbuild -->
+
+  <!-- Because this project uses vulcanize this should be your only html import
+       in this file. All other imports should go in elements.html -->
+  <link rel="import" href="{{static_url("polymer/elements/elements.html") }}">
+
+  <!-- For shared styles, shared-styles.html import in elements.html -->
+  <style is="custom-style" include="shared-styles"></style>
+
+  
+</head>
+
+<body unresolved>
+  <!-- build:remove -->
+  <span id="browser-sync-binding"></span>
+  <!-- endbuild -->
+
+  <template is="dom-bind" id="app">
+    <!-- Primary Drawer Panel Init pdp1-->
+    <paper-drawer-panel id="paperDrawerPanel" drawer-width="80px">
+      <!-- Primary Drawer Panel Drawer -->
+      <paper-scroll-header-panel drawer fixed id="pdp1-drawer">
+        <!-- Drawer Toolbar -->
+        <paper-toolbar id="pdp1-drawer-tb">
+          
+        </paper-toolbar>
+
+        <!-- Primary Drawer Panel Drawer Main-->
+        <paper-menu id="pdp1-drawer-menu" attr-for-selected="data-route" selected="[[route]]">
+          <a id="pdp1-drawer-icon1" href="{{baseUrl}}">
+           Home
+          </a>
+
+          <a  id="pdp1-drawer-icon2" href="{{baseUrl}}project">
+           Open Projects. 
+          </a>
+
+          <a id="pdp1-drawer-icon3"> 
+            <paper-icon-button icon=""></paper-icon-button>
+          </a>
+
+          <a id="pdp1-drawer-icon4">
+            <paper-icon-button icon=""></paper-icon-button>
+          </a>
+
+          <a id="pdp1-drawer-icon5">
+            <paper-icon-button icon=""></paper-icon-button>
+          </a>
+
+          <a  href="{{baseUrl}}library" id="pdp1-drawer-icon6">
+            Libraries
+          </a>
+          <a  href="{{baseUrl}}browse" id="pdp1-drawer-icon7">
+            Browse
+          </a>
+        </paper-menu>
+      </paper-scroll-header-panel>
+
+
+      <!-- Primary Drawer Panel Drawer Contentid="pdp1-main"  -->
+      <paper-scroll-header-panel main id="headerPanelMain" fixed>
+
+            <!-- Secondary Drawer Panel Init -->
+            <paper-drawer-panel  id="pdp2" drawer-width="80px">
+                 <!-- Seconday Drawer Panel Drawer -->
+                  <paper-scroll-header-panel drawer fixed id="pdp2-drawer">
+            
+                      <paper-toolbar id="pdp2-drawer-tb">
+                          <span >Home</span>
+                      </paper-toolbar>
+                           <!-- Drawer Content We are not sure what will come here. -->
+                          <paper-menu id="pdp2-drawer-menu">
+                          <a id="pdp2-drawer-icon1" data-route="contact" href="{{baseUrl}}project/streaming">
+                            <span>Projects</span>
+                          </a>
+                          <a id="pdp2-drawer-icon1" data-route="contact" href="{{baseUrl}}project/visualization">
+                            <span>News Feed</span>
+                          </a>
+                          <a id="pdp2-drawer-icon1" data-route="contact" href="{{baseUrl}}projects/data-config">
+                            <span></span>
+                          </a>
+                          <a id="pdp2-drawer-icon1" data-route="contact" href="{{baseUrl}}projects/predictions">
+                            <span></span>
+                          </a>
+                          </paper-menu>
+
+                   </paper-scroll-header-panel>
+          
+
+               <!-- Seconday Drawer Panel Main id="pdp2-drawer-icon1"-->
+               <paper-scroll-header-panel main id="pdp2-main"   fixed>
+                  <paper-toolbar id="pdp2-main-tb" >
+                        <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>
+                          <span class="space"></span>
+                            <!-- Toolbar icons -->
+                          <paper-icon-button icon="refresh"></paper-icon-button>
+                          <paper-icon-button icon="search"></paper-icon-button>
+                  </paper-toolbar>
+
+                  <!-- Seconday Drawer Panel Content Start -->
+
+                  <!-- Ways to match a route with view -->
+                      <!-- 1. By using iron pages.-->
+                      <!-- 1. By using Page.js Chrome Example-->
+                            <div class="content" id="pdp2-main-content" >
+                                    <section  id="pdp2-main-section" >
+                                        
+
+
+                                      <iron-pages attr-for-selected="data-route" selected="{{route}}" id="pdp2-main-ip" >
+
+
+
+<home-newsfeed data-route="kitboard" id="pdp2-main-el-hn" ></home-newsfeed>
+<home-projects data-route="kitboard-2" id="pdp2-main-el-hp"></home-projects>
+<projects-action data-route="home" id="pdp2-main-el-pa" ></projects-action>
+<projects-data-config data-route="projects-data-config" id="pdp2-main-el-dc"></projects-data-config>
+<projects-prediction data-route="projects-prediction" id="pdp2-main-el-pp"></projects-prediction>
+<projects-streaming data-route="projects-streaming" id="pdp2-main-el-ps"></projects-streaming>
+<projects-visual data-route="projects-visual" id="pdp2-main-el-pv"></projects-visual>
+<lib-prediction data-route="lib-prediction" id="pdp2-main-el-lp"></lib-prediction>
+<lib-streaming data-route="lib-streaming" id="pdp2-main-el-ls"></lib-streaming>
+<lib-visual data-route="lib-visual" id="pdp2-main-el-lv"></lib-visual>
+<lib-action data-route="lib-action" id="pdp2-main-el-la"></lib-action>
+<browse-docs data-route="homdde" id="pdp2-main-el-bd"></browse-docs>
+<browse-tuts data-route="browse-tuts"id="pdp2-main-el-bt" ><browse-tuts>
+
+
+
+
+
+                                      </iron-pages>
+                                    </section>
+                              </div>
+                  <!-- Seconday Drawer Panel End -->
+                 </paper-scroll-header-panel>
+                  <!-- End of Level 2  Drawer Panel Drawer-->
+            </paper-drawer-panel>      
+            <!-- End of Level 2  Drawer Panel Init-->
+      </paper-scroll-header-panel>
+      <!-- End of Level 1 Main-->
+    </paper-drawer-panel>
+    <!-- End of Level 1 Drawer Panel Init-->
+
+    <paper-toast id="toast">
+      <span class="toast-hide-button" role="button" tabindex="0" onclick="app.$.toast.hide()">Ok</span>
+    </paper-toast>
+
+    <!-- Uncomment next block to enable Service Worker support (1/2) -->
+    <!--
+    <paper-toast id="caching-complete"
+                 duration="6000"
+                 text="Caching complete! This app will work offline.">
+    </paper-toast>
+    <platinum-sw-register auto-register
+                          clients-claim
+                          skip-waiting
+                          base-uri="bower_components/platinum-sw/bootstrap"
+                          on-service-worker-installed="displayInstalledToast">
+      <platinum-sw-cache default-cache-strategy="fastest"
+                         cache-config-file="cache-config.json">
+      </platinum-sw-cache>
+    </platinum-sw-register>
+    -->
+
+  </template>
+
+  <!-- build:js scripts/app.js -->
+
+  <link rel="stylesheet" href=  >
+  <script src="{{static_url("polymer/scripts/app.js") }}"></script>
+  <!-- endbuild-->
+</body>
+
+</html>
